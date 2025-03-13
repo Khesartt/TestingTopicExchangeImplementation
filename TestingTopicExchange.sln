@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulated ApiCore", "Simulated ApiCore", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulated PaymentWorker", "Simulated PaymentWorker", "{AB621887-6071-4D2A-A342-0DE8EBF8A44B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulated TicketingWorker", "Simulated TicketingWorker", "{D78E1238-D666-4377-894F-1C1250417314}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiCorePayment", "ApiCorePayment\ApiCorePayment.csproj", "{4280DCBB-08F5-442B-A6BE-A2552C6DCE00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "orders.PaymentWorker", "orders.PaymentWorker\orders.PaymentWorker.csproj", "{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "orders.TicketingWorker", "orders.TicketingWorker\orders.TicketingWorker.csproj", "{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4280DCBB-08F5-442B-A6BE-A2552C6DCE00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4280DCBB-08F5-442B-A6BE-A2552C6DCE00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4280DCBB-08F5-442B-A6BE-A2552C6DCE00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4280DCBB-08F5-442B-A6BE-A2552C6DCE00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4280DCBB-08F5-442B-A6BE-A2552C6DCE00} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{E5FE43CD-E1AF-4B7F-9578-A820D8F7276A} = {AB621887-6071-4D2A-A342-0DE8EBF8A44B}
+		{6DC2E19B-0AAA-4CD0-A8C5-33961D13F359} = {D78E1238-D666-4377-894F-1C1250417314}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C971D90-0DF8-4F41-A000-DC53DAE34204}
+	EndGlobalSection
+EndGlobal
