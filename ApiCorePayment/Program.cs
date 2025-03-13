@@ -1,6 +1,6 @@
+using ApiCorePayment.Events;
 using MassTransit;
 using Microsoft.OpenApi.Models;
-using sharedResources.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,10 @@ builder.Services.AddMassTransit(config =>
         {
             x.ExchangeType = "topic";
         });
+
+        cfg.ClearSerialization();
+        cfg.UseRawJsonSerializer();  
+        cfg.UseRawJsonDeserializer(); 
     });
 });
 

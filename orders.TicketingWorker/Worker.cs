@@ -1,5 +1,5 @@
 using MassTransit;
-using sharedResources.Events;
+using orders.TicketingWorker.Events;
 
 namespace orders.TicketingWorker
 {

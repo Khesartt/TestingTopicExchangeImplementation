@@ -22,6 +22,10 @@ builder.Services.AddMassTransit(config =>
                 x.RoutingKey = "orders.payment.*";
             });
         });
+
+        cfg.ClearSerialization();
+        cfg.UseRawJsonSerializer();
+        cfg.UseRawJsonDeserializer();
     });
 });
 
