@@ -9,7 +9,7 @@ builder.Services.AddMassTransit(config =>
     config.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("amqp://guest:guest@localhost:5672");
-
+        cfg.Message<OrderPaymentEvent>(x => x.SetEntityName("orders.payment"));
         cfg.Publish<OrderPaymentEvent>(x =>
         {
             x.ExchangeType = "x-delayed-message";

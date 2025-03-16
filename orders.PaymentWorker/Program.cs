@@ -25,6 +25,7 @@ builder.Services.AddMassTransit(config =>
             });
         });
 
+        cfg.Message<OrderPaymentEvent>(x => x.SetEntityName("orders.payment"));
         cfg.Publish<OrderPaymentEvent>(x =>
         {
             x.ExchangeType = "x-delayed-message";
