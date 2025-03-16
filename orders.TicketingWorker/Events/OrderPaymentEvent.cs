@@ -3,4 +3,5 @@
 namespace orders.TicketingWorker.Events;
 
 [MessageUrn(nameof(OrderPaymentEvent))]
-public record OrderPaymentEvent(string message);
+[EntityName(nameof(OrderPaymentEvent))] 
+public record OrderPaymentEvent(string message, string status);

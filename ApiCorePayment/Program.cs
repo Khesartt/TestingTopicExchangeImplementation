@@ -10,10 +10,10 @@ builder.Services.AddMassTransit(config =>
     {
         cfg.Host("amqp://guest:guest@localhost:5672");
 
-        cfg.Message<OrderPaymentEvent>(x => x.SetEntityName("orders.payment"));
         cfg.Publish<OrderPaymentEvent>(x =>
         {
-            x.ExchangeType = "topic";
+            x.ExchangeType = "x-delayed-message";
+            x.SetExchangeArgument("x-delayed-type", "topic");
         });
 
         cfg.ClearSerialization();
@@ -39,7 +39,11 @@ app.MapPost("/publish/{status}", async (IPublishEndpoint publishEndpoint, string
 {
     var message = new OrderPaymentEvent($"El pago tiene el estado: {status}", status);
 
-    await publishEndpoint.Publish(message, x => x.SetRoutingKey($"orders.payment.{status}"));
+    await publishEndpoint.Publish(message, context =>
+    {
+        context.SetRoutingKey($"orders.payment.{status}");
+        context.Headers.Set("x-delay", TimeSpan.FromSeconds(30).TotalMilliseconds);
+    });
 
     return Results.Ok($"Mensaje publicado con estado: {status}");
 })

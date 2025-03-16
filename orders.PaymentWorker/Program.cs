@@ -1,5 +1,6 @@
 using MassTransit;
 using orders.PaymentWorker;
+using orders.PaymentWorker.Events;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
@@ -18,9 +19,16 @@ builder.Services.AddMassTransit(config =>
             e.ConfigureConsumer<PaymentProcessedConsumer>(ctx);
             e.Bind("orders.payment", x =>
             {
-                x.ExchangeType = "topic";
+                x.ExchangeType = "x-delayed-message";
+                x.SetExchangeArgument("x-delayed-type", "topic");
                 x.RoutingKey = "orders.payment.*";
             });
+        });
+
+        cfg.Publish<OrderPaymentEvent>(x =>
+        {
+            x.ExchangeType = "x-delayed-message";
+            x.SetExchangeArgument("x-delayed-type", "topic");
         });
 
         cfg.ClearSerialization();

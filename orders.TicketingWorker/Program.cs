@@ -18,7 +18,8 @@ builder.Services.AddMassTransit(config =>
             e.ConfigureConsumer<PaymentApprovedConsumer>(ctx);
             e.Bind("orders.payment", x =>
             {
-                x.ExchangeType = "topic";
+                x.ExchangeType = "x-delayed-message";
+                x.SetExchangeArgument("x-delayed-type", "topic");
                 x.RoutingKey = "orders.payment.approved";
             });
         });
