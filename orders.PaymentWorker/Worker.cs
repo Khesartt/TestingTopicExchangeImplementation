@@ -1,54 +1,43 @@
+namespace orders.PaymentWorker;
+
 using MassTransit;
-using MassTransit.Transports;
 using orders.PaymentWorker.Events;
 
-namespace orders.PaymentWorker
+public class Worker(ILogger<Worker> logger) : BackgroundService
 {
-    public class Worker : BackgroundService
+    private readonly ILogger<Worker> logger = logger;
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        private readonly ILogger<Worker> _logger;
-
-        public Worker(ILogger<Worker> logger)
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _logger = logger;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
+            if (this.logger.IsEnabled(LogLevel.Information))
             {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(60000, stoppingToken);
+                this.logger.LogInformation($"COM COM ONLINE AND READY {DateTimeOffset.Now}:");
             }
+            await Task.Delay(60000, stoppingToken);
         }
     }
+}
 
-    public class PaymentProcessedConsumer : IConsumer<OrderPaymentEvent>
+public class PaymentProcessedConsumer(ILogger<PaymentProcessedConsumer> logger, IPublishEndpoint publishEndpoint) : IConsumer<OrderPaymentEvent>
+{
+    private readonly ILogger<PaymentProcessedConsumer> logger = logger;
+    private readonly IPublishEndpoint publishEndpoint = publishEndpoint;
+
+    public async Task Consume(ConsumeContext<OrderPaymentEvent> context)
     {
-        private readonly ILogger<PaymentProcessedConsumer> _logger;
-        private readonly IPublishEndpoint _publishEndpoint;
+        this.logger.LogInformation($"estoy en {nameof(PaymentProcessedConsumer)}");
+        this.logger.LogInformation($"{nameof(PaymentProcessedConsumer)} Recibido: {context.Message}");
 
-        public PaymentProcessedConsumer(ILogger<PaymentProcessedConsumer> logger, IPublishEndpoint publishEndpoint)
+        if (context.Message.status != "approved")
         {
-            _logger = logger;
-            _publishEndpoint = publishEndpoint;
-        }
-
-        public async Task Consume(ConsumeContext<OrderPaymentEvent> context)
-        {
-            _logger.LogInformation($"estoy en PaymentProcessedConsumer");
-            _logger.LogInformation($"[Consumer 1] Recibido: {context.Message}");
-
-            var message = new OrderPaymentEvent($"El pago tiene el estado: {context.Message.status}", "approved");
-
-
-            await _publishEndpoint.Publish(message, context =>
+            var message = new OrderPaymentEvent($"pase por {nameof(PaymentProcessedConsumer)} marcando approved", "approved");
+            this.logger.LogInformation($"enviando mensaje con tiempo de retraso de 1 minuto al consumidor de aprobacion");
+            await this.publishEndpoint.Publish(message, context =>
             {
-                context.SetRoutingKey($"orders.payment.{context.Message.status}");
-                context.Headers.Set("x-delay", TimeSpan.FromSeconds(30).TotalMilliseconds);
+                context.SetRoutingKey($"orders.payment.approved");
+                context.Headers.Set("x-delay", TimeSpan.FromSeconds(1).TotalMilliseconds);
             });
         }
     }

@@ -1,7 +1,6 @@
-﻿using MassTransit;
+﻿namespace orders.PaymentWorker.Events;
 
-namespace orders.PaymentWorker.Events;
+using MassTransit;
 
 [MessageUrn(nameof(OrderPaymentEvent))]
-//[EntityName(nameof(OrderPaymentEvent))]
 public record OrderPaymentEvent(string message, string status);

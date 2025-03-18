@@ -1,44 +1,34 @@
+namespace orders.TicketingWorker;
+
 using MassTransit;
+using Microsoft.Extensions.Logging;
 using orders.TicketingWorker.Events;
 
-namespace orders.TicketingWorker
+public class Worker(ILogger<Worker> logger) : BackgroundService
 {
-    public class Worker : BackgroundService
+    private readonly ILogger<Worker> logger = logger;
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        private readonly ILogger<Worker> _logger;
-
-        public Worker(ILogger<Worker> logger)
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _logger = logger;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
+            if (this.logger.IsEnabled(LogLevel.Information))
             {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(60000, stoppingToken);
+                this.logger.LogInformation($"COM COM ONLINE AND READY {DateTimeOffset.Now}:");
             }
+            await Task.Delay(60000, stoppingToken);
         }
     }
+}
 
-    public class PaymentApprovedConsumer : IConsumer<OrderPaymentEvent>
+public class PaymentApprovedConsumer(ILogger<PaymentApprovedConsumer> logger) : IConsumer<OrderPaymentEvent>
+{
+    private readonly ILogger<PaymentApprovedConsumer> logger = logger;
+
+    public Task Consume(ConsumeContext<OrderPaymentEvent> context)
     {
-        private readonly ILogger<PaymentApprovedConsumer> _logger;
-
-        public PaymentApprovedConsumer(ILogger<PaymentApprovedConsumer> logger)
-        {
-            _logger = logger;
-        }
-
-        public Task Consume(ConsumeContext<OrderPaymentEvent> context)
-        {
-            _logger.LogInformation($"estoy en PaymentApprovedConsumer");
-            _logger.LogInformation($"[Consumer 2] Recibido: {context.Message}");
-            return Task.CompletedTask;
-        }
+        this.logger.LogInformation($"estoy en {nameof(PaymentApprovedConsumer)}");
+        this.logger.LogInformation($"{nameof(PaymentApprovedConsumer)} Recibido: {context.Message}");
+        return Task.CompletedTask;
     }
 }
